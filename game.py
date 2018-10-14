@@ -102,20 +102,21 @@ class Geralt(Pers):
 
 class Enemie(Pers):
     def __init__(self, enemie, hp, attack, w, h):
-        super().__init__(position=(0, 255), images=pygame.transform.scale(load_images('staff/images/' + enemie), (w, h)))
+        super().__init__(position=(0, 255), images=load_images('staff/images/' + enemie))
+        #images=pg.transform.scale(load_images('staff/images/' + enemie), (w, h)
         self.hp = hp
         self.attack = attack
 
-def init_sprites(player, background):
-    return pg.sprite.Group(player), pg.sprite.Group(background)#, pg.sprite.Group(dragon)
+def init_sprites(player, background, dragon):
+    return pg.sprite.Group(player), pg.sprite.Group(background), pg.sprite.Group(dragon)
 
 def main_loop(screen, clock):
     back = load_images('staff/images/back')
     #enemie = Pers(position=(0, 255), images = images, flag = 1, w=w, h=h, hp=hp, attack=attack)
-   # dragon = Enemie('enem_dragon', 200, 10, 284, 284)
+    dragon = Enemie('enem_dragon', 200, 10, 284, 284)
     player = Geralt()
     background = Pers(position=(0, -300), images=back)
-    player_, background_ = init_sprites(player, background)
+    player_, background_, dragon_ = init_sprites(player, background, dragon)
     music = pg.mixer.music.load('staff/game.mp3')
     pg.mixer.music.play(-1, 1)
     state = True
@@ -142,8 +143,10 @@ def main_loop(screen, clock):
 
         background_.update(dt)
         player_.update(dt)
+        dragon_.update(dt)
         background_.draw(screen)
         player_.draw(screen)
+        dragon_.draw(screen)
         pg.display.update()
 
 def init():

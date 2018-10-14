@@ -165,7 +165,7 @@ def greetings():
     anim = pg.sprite.Group(menu)
     in_menu= True
     while in_menu:
-        dt = clock.tick(FPS) / 1000
+        dt = clock.tick(FPS) / 4000
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 exit(0)

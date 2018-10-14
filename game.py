@@ -101,19 +101,21 @@ class Geralt(Pers):
         self.attack = 20
 
 class Enemie(Pers):
-    def __init__(self, enemie, hp, attack, images, w, h):
+    def __init__(self, enemie, hp, attack, w, h):
         super().__init__(position=(0, 255), images=pygame.transform.scale(load_images('staff/images/' + enemie), (w, h)))
         self.hp = hp
         self.attack = attack
 
-def main_loop(screen, clock, FPS):
+def init_sprites(player, background):
+    return pg.sprite.Group(player), pg.sprite.Group(background)#, pg.sprite.Group(dragon)
+
+def main_loop(screen, clock):
     back = load_images('staff/images/back')
     #enemie = Pers(position=(0, 255), images = images, flag = 1, w=w, h=h, hp=hp, attack=attack)
-    #enemie_ = pg.sprite.Group(enemie)
+   # dragon = Enemie('enem_dragon', 200, 10, 284, 284)
     player = Geralt()
     background = Pers(position=(0, -300), images=back)
-    all_sprites = pg.sprite.Group(player)
-    back_anim = pg.sprite.Group(background)
+    player_, background_ = init_sprites(player, background)
     music = pg.mixer.music.load('staff/game.mp3')
     pg.mixer.music.play(-1, 1)
     state = True
@@ -138,20 +140,19 @@ def main_loop(screen, clock, FPS):
                 elif event.key == 115 or 119:
                     player.velocity.y = 0
 
-        back_anim.update(dt)
-        all_sprites.update(dt)
-        back_anim.draw(screen)
-        all_sprites.draw(screen)
+        background_.update(dt)
+        player_.update(dt)
+        background_.draw(screen)
+        player_.draw(screen)
         pg.display.update()
 
 def init():
     pg.init()
-    pg.display.set_caption('Witcher 4: Going into 8 bit')
+    pg.display.set_caption('Witcher 4: Going into 16 bit')
     canvas = WIDTH, HEIGHT = 1500, 500
-    FPS = 60
     screen = pg.display.set_mode(canvas)
     clock = pg.time.Clock()
-    main_loop(screen, clock, FPS)
+    main_loop(screen, clock)
 
 def greetings():
     greet_menu = load_images('staff/images/menu')
